@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const HomePage(title: 'Home Test MPP'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -50,26 +52,32 @@ class ContactPage extends StatelessWidget{
     return Scaffold(
       appBar: AppBar(
         title: const Text('Page contact'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: (){
+              print("ddddd");
+            },
+          )
+        ],
       ),
       body: ListView(
-        //child: const Column(
-          children: const [
-            CardContact(),
-            CardContact(),
-            CardContact(),
-            CardContact(),
-            CardContact(),
-            CardContact(),
-            CardContact(),
-            CardContact(),
-            CardContact(),
-            CardContact(),
-            CardContact(),
-            CardContact(),
-            CardContact(),
-            CardContact(),
-          ],
-        //)
+        children: const [
+          CardContact(),
+          CardContact(),
+          CardContact(),
+          CardContact(),
+          CardContact(),
+          CardContact(),
+          CardContact(),
+          CardContact(),
+          CardContact(),
+          CardContact(),
+          CardContact(),
+          CardContact(),
+          CardContact(),
+          CardContact(),
+        ],
       ),
     );
   }
@@ -79,26 +87,41 @@ class CardContact extends StatelessWidget {
   const CardContact({
     super.key,
   });
+  
+  launchURLL(Uri url) async{
+    if (await canLaunchUrl(url)){
+      await launchUrl(url);
+    }else{
+      print("ddddddd");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Card(
-      child: SizedBox(
-        width: 300,
-        height: 100,
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Renaud F",style: TextStyle(fontSize: 18)),
-                Text("0606060606",style: TextStyle(fontSize: 14)),
-              ]
+    return Card(
+      clipBehavior: Clip.hardEdge,
+      child: InkWell(
+        onTap: () {
+          Uri url = Uri.parse('https://www.google.fr/');
+          launchURLL(url);
+        },
+        child: const SizedBox(
+          width: 300,
+          height: 100,
+          child: Padding(
+            padding: EdgeInsets.all(20),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Renaud F",style: TextStyle(fontSize: 18)),
+                  Text("0606060606",style: TextStyle(fontSize: 14)),
+                ]
+              ),
             ),
           ),
         ),
-      ),
+      )
     );
   }
 }
