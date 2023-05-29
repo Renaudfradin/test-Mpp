@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,11 +15,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Test MPP',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightGreen),
         useMaterial3: true,
+        fontFamily: 'Georgia'
       ),
       home: const HomePage(title: 'Home Test MPP'),
       debugShowCheckedModeBanner: false,
+
     );
   }
 }
@@ -56,7 +59,7 @@ class ContactPage extends StatelessWidget{
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: (){
-              print("ddddd");
+              contactCard();
             },
           )
         ],
@@ -81,6 +84,8 @@ class ContactPage extends StatelessWidget{
       ),
     );
   }
+
+  void contactCard() => print("ddddd");
 }
 
 class CardContact extends StatelessWidget {
@@ -88,11 +93,11 @@ class CardContact extends StatelessWidget {
     super.key,
   });
   
-  launchURLL(Uri url) async{
+  void launchURLL(Uri url) async{
     if (await canLaunchUrl(url)){
       await launchUrl(url);
     }else{
-      print("ddddddd");
+      throw Exception('Could not launch $url');
     }
   }
 
@@ -100,6 +105,7 @@ class CardContact extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.hardEdge,
+      color: Colors.grey,
       child: InkWell(
         onTap: () {
           Uri url = Uri.parse('https://www.google.fr/');
@@ -107,7 +113,7 @@ class CardContact extends StatelessWidget {
         },
         child: const SizedBox(
           width: 300,
-          height: 100,
+          height: 150,
           child: Padding(
             padding: EdgeInsets.all(20),
             child: Center(
@@ -116,12 +122,39 @@ class CardContact extends StatelessWidget {
                 children: [
                   Text("Renaud F",style: TextStyle(fontSize: 18)),
                   Text("0606060606",style: TextStyle(fontSize: 14)),
+                  PopupPhone()
                 ]
               ),
             ),
           ),
         ),
       )
+    );
+  }
+}
+
+class PopupPhone extends StatelessWidget {
+  const PopupPhone({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(onPressed: () {
+      Clipboard.setData(const ClipboardData(text: "0606060606"));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Numéro de téléphone copier '),
+          duration: const Duration(milliseconds: 3000),
+          width: 300, // Width of the SnackBar.
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+        ),
+       );
+      },
+      child: const Icon(Icons.phone),
     );
   }
 }
