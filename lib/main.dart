@@ -49,7 +49,8 @@ class HomePage extends StatelessWidget {
 
 class ContactPage extends StatelessWidget{
   const ContactPage({super.key});
-
+  //List<int> bottom = <int>[0];
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +60,7 @@ class ContactPage extends StatelessWidget{
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: (){
-              contactCard();
+              print("add");
             },
           )
         ],
@@ -84,8 +85,6 @@ class ContactPage extends StatelessWidget{
       ),
     );
   }
-
-  void contactCard() => print("ddddd");
 }
 
 class CardContact extends StatelessWidget {
